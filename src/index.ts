@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import { sequelize } from './config/database';
+import { sequelize } from './models';
 import categoryRoutes from './routes/categoryRoutes';
 
 /*sequelize.sync({ alter: true }) 
@@ -23,6 +23,13 @@ app.get('/', (_req, res) => {
   res.send('Homepage');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+sequelize.authenticate()
+  .then(() => {
+    console.log('Database connected');
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('DB Connection error:', err);
+  });

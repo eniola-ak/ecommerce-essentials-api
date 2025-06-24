@@ -1,36 +1,25 @@
 import { Request, Response } from 'express';
-import { Category } from '../models/category';
+import * as categoryService from '../services/categoryService';
 
 export const createCategory = async (req: Request, res: Response) => {
   try {
     const { name, slug, description } = req.body;
-
-    // Basic validation
     if (!name || !slug) {
       res.status(400).json({ message: 'Name and slug are required.' });
-      return;
     }
-
-    const existing = await Category.findOne({ where: { slug } });
-    if (existing) {
-      res.status(409).json({ message: 'Category with this slug already exists.' });
-      return;
-    }
-
-    const category = await Category.create({ name, slug, description });
+   
+    const category = await categoryService.createNewCategory(name, slug, description);
     res.status(201).json(category);
-  } catch (error) {
-    console.error('Error creating category:', error);
-    res.status(500).json({ message: 'Internal server error.' });
+  } catch (error: any) {
+    res.status(error.message.includes('exists') ? 409 : 400).json({ message: error.message });
   }
 };
 
 export const getAllCategories = async (_req: Request, res: Response) => {
   try {
-    const categories = await Category.findAll();
+    const categories = await categoryService.getCategories();
     res.status(200).json(categories);
   } catch (error) {
-    console.error('Error fetching categories:', error);
     res.status(500).json({ message: 'Internal server error.' });
   }
 };
@@ -38,16 +27,34 @@ export const getAllCategories = async (_req: Request, res: Response) => {
 export const getCategoryBySlug = async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
-    const category = await Category.findOne({ where: { slug } });
-
+    const category = await categoryService.getCategory(slug);
     if (!category) {
       res.status(404).json({ message: 'Category not found.' });
       return;
     }
-
     res.status(200).json(category);
   } catch (error) {
-    console.error('Error fetching category by slug:', error);
     res.status(500).json({ message: 'Internal server error.' });
+  }
+};
+
+export const updateCategoryBySlug = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    const updated = await categoryService.updateCategoryBySlug(slug, req.body);
+    res.status(200).json(updated);
+  } catch (error: any) {
+    const status = error.message.includes('not found') ? 404 : 409;
+    res.status(status).json({ message: error.message });
+  }
+};
+
+export const deleteCategoryBySlug = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    await categoryService.deleteCategoryBySlug(slug);
+    res.status(200).json({ message: 'Category deleted successfully.' });
+  } catch (error: any) {
+    res.status(404).json({ message: error.message });
   }
 };

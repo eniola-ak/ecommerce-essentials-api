@@ -1,48 +1,74 @@
-import { Table, Column, Model, DataType, ForeignKey, PrimaryKey, AutoIncrement, BelongsTo } from 'sequelize-typescript';
-import { Category } from './category';
+import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
-@Table({ tableName: 'product' })
-export class Product extends Model<Product> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
-  id!: number;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false
-  })
-  title!: string;
-
-  @Column(DataType.STRING)
+interface ProductAttributes {
+  id: number;
+  title: string;
   slug?: string;
-
-  @Column(DataType.STRING)
   description?: string;
-
-  @Column(DataType.STRING)
   image?: string;
+  price: number;
+  stockQuantity: number;
+  categoryId: number;
+}
 
-  @Column({
-    type: DataType.DECIMAL(10, 2),
-    allowNull: false
-  })
-  price!: number;
+interface ProductCreationAttributes extends Optional<ProductAttributes, 'id'> {}
 
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false
-  })
-  stockQuantity!: number;
+export class Product
+  extends Model<ProductAttributes, ProductCreationAttributes>
+  implements ProductAttributes
+{
+  declare id: number;
+  declare title: string;
+  declare slug?: string;
+  declare description?: string;
+  declare image?: string;
+  declare price: number;
+  declare stockQuantity: number;
+  declare categoryId: number;
 
-  @ForeignKey(() => Category)
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false
-  })
-  categoryId!: number;
+  static initModel(sequelize: Sequelize): typeof Product {
+    Product.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+          allowNull: false,
+        },
+        title: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        slug: {
+          type: DataTypes.STRING,
+        },
+        description: {
+          type: DataTypes.STRING,
+        },
+        image: {
+          type: DataTypes.STRING,
+        },
+        price: {
+          type: DataTypes.DECIMAL(10, 2),
+          allowNull: false,
+        },
+        stockQuantity: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        },
+        categoryId: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        },
+      },
+      {
+        sequelize,
+        tableName: 'Product',
+        modelName: 'Product',
+        timestamps: false, // change to true if you have createdAt/updatedAt
+      }
+    );
 
-  @BelongsTo(() => Category)
-  category!: Category;
-
+    return Product;
+  }
 }

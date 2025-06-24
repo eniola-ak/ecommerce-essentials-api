@@ -1,29 +1,42 @@
-import { Table, Column, Model, DataType, PrimaryKey, AutoIncrement, HasMany } from 'sequelize-typescript';
-import { Product } from './product';
-import {CreationOptional, InferAttributes, InferCreationAttributes,} from 'sequelize';
+import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
-@Table({ tableName: 'category' })
-export class Category extends Model<
-  InferAttributes<Category>,
-  InferCreationAttributes<Category>
-> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
-  id!: CreationOptional<number>;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false
-  })
-  name!: string;
-
-  @Column(DataType.STRING)
+interface CategoryAttributes {
+  id: number;
+  name: string;
   slug?: string;
-
-  @Column(DataType.STRING)
   description?: string;
+}
 
-  @HasMany(() => Product)
-  products?: Product[];
+interface CategoryCreationAttributes extends Optional<CategoryAttributes, 'id'> {}
+
+export class Category extends Model<CategoryAttributes, CategoryCreationAttributes>
+  implements CategoryAttributes {
+  declare id: number;
+  declare name: string;
+  declare slug?: string;
+  declare description?: string;
+
+  static initModel(sequelize: Sequelize): typeof Category {
+    Category.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+          allowNull: false,
+        },
+        name: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        slug: DataTypes.STRING,
+        description: DataTypes.STRING,
+      },
+      {
+        sequelize,
+        tableName: 'Category',
+      }
+    );
+    return Category;
+  }
 }
