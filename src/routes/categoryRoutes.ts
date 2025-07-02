@@ -6,17 +6,9 @@ import {
   updateCategoryBySlug,
   deleteCategoryBySlug,
 } from '../controllers/categoryController';
-
+import { adminOnly } from '../middleware/adminOnly';
 const router = Router();
 
-const adminOnly = (_req: Request, res: Response, next: NextFunction) => {
-  const isAdmin = true;
-  if (!isAdmin) {
-    res.status(403).json({ message: 'Forbidden. Admins only.' });
-    return;
-  }
-  next();
-};
 
 // POST /api/categories - Create a category
 router.post('/', adminOnly, createCategory);
