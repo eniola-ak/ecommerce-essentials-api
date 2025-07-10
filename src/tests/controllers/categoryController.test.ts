@@ -11,7 +11,7 @@ import * as categoryService from '../../services/categoryService';
 // Mock the entire service layer
 jest.mock('../../services/categoryService');
 
-describe('Category Controller (Refactored)', () => {
+describe('Category Controller', () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let json: jest.Mock;

@@ -20,3 +20,11 @@ export const findProductBySlug = (slug: string) => {
     include: ['category'],
   });
 };
+
+export const updateProduct = async (product: Product) => {
+  return product.save();
+};
+
+export const deleteProduct = async (product: Product) => {
+  return product.destroy();
+};
