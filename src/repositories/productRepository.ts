@@ -21,8 +21,8 @@ export const findProductBySlug = (slug: string) => {
   });
 };
 
-export const updateProduct = async (product: Product) => {
-  return product.save();
+export const updateProduct = async (product: Product, updates: Partial<Product>) => {
+  return product.update(updates);
 };
 
 export const deleteProduct = async (product: Product) => {

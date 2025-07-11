@@ -29,8 +29,12 @@ export class Category extends Model<CategoryAttributes, CategoryCreationAttribut
           type: DataTypes.STRING,
           allowNull: false,
         },
-        slug: DataTypes.STRING,
-        description: DataTypes.STRING,
+        slug: {
+          type: DataTypes.STRING, 
+          unique: true,
+        },
+
+        description: {type: DataTypes.STRING,}
       },
       {
         sequelize,

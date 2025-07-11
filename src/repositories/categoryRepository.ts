@@ -16,8 +16,8 @@ export const createCategory = (data: {
   return Category.create(data);
 };
 
-export const updateCategory = (category: Category) => {
-  return category.save();
+export const updateCategory = (category: Category, updates: Partial<Category>) => {
+  return category.update(updates);
 };
 
 export const deleteCategory = (category: Category) => {

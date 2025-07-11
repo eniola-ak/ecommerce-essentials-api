@@ -1,10 +1,12 @@
 import * as categoryRepo from '../repositories/categoryRepository';
-import { Category } from '../models/Category';
+import slugify from 'slugify';
+import { CreateCategory, UpdateCategory } from '../interface/categoryInterface';
 
-export const createNewCategory = async (name: string, slug: string, description?: string) => {
-  if (!name || !slug) {
-    throw new Error('Name and slug are required.');
-  }
+const generateSlug = (name: string) => slugify(name, { lower: true });
+
+export const createNewCategory = async (payload: CreateCategory) => {
+  const { name, description } = payload;
+  const slug = generateSlug(name);
 
   const existing = await categoryRepo.findCategoryBySlug(slug);
   if (existing) {
@@ -24,21 +26,25 @@ export const getCategory = (slug: string) => {
 
 export const updateCategoryBySlug = async (
   slug: string,
-  updates: { name?: string; newSlug?: string; description?: string }
+  updates: UpdateCategory
 ) => {
   const category = await categoryRepo.findCategoryBySlug(slug);
   if (!category) throw new Error('Category not found.');
 
-  if (updates.newSlug && updates.newSlug !== slug) {
-    const slugExists = await categoryRepo.findCategoryBySlug(updates.newSlug);
-    if (slugExists) throw new Error('Another category with the new slug already exists.');
-    category.slug = updates.newSlug;
+  if (updates.name) {
+    // Regenerate slug from new name
+    const regeneratedSlug = generateSlug(updates.name);
+
+    // Prevent slug collision with another category
+    if (regeneratedSlug !== slug) {
+      const slugExists = await categoryRepo.findCategoryBySlug(regeneratedSlug);
+      if (slugExists) throw new Error('Another category with this slug already exists.');
+    }
+
+    updates.slug = regeneratedSlug;
   }
 
-  category.name = updates.name ?? category.name;
-  category.description = updates.description ?? category.description;
-
-  return categoryRepo.updateCategory(category);
+  return categoryRepo.updateCategory(category, updates);
 };
 
 export const deleteCategoryBySlug = async (slug: string) => {

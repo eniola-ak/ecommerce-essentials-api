@@ -41,6 +41,7 @@ export class Product
         },
         slug: {
           type: DataTypes.STRING,
+          unique: true,
         },
         description: {
           type: DataTypes.STRING,

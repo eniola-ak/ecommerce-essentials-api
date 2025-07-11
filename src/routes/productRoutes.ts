@@ -17,7 +17,7 @@ const router = Router();
 router.post('/', adminOnly, validate(createProductSchema), createProduct);
 router.get('/', getProducts);
 router.get('/:slug',getProductBySlug );
-router.put('/:slug', adminOnly, validate(updateProductSchema), updateProductBySlug);
+router.patch('/:slug', adminOnly, validate(updateProductSchema), updateProductBySlug);
 router.delete('/:slug', adminOnly, deleteProductBySlug);
 
 export default router;
