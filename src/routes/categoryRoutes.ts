@@ -9,11 +9,12 @@ import {
 import { adminOnly } from '../middleware/adminOnly';
 import { validate } from '../middleware/validate';
 import { createCategorySchema, updateCategorySchema } from '../validations/categoryValidation';
+import { authenticateJWT } from '../middleware/authMiddleware'; 
 const router = Router();
 
 
 // POST /api/categories - Create a category
-router.post('/', adminOnly, validate(createCategorySchema), createCategory);
+router.post('/', authenticateJWT, adminOnly, validate(createCategorySchema), createCategory);
 
 // GET /api/categories - Show all categories
 router.get('/', getAllCategories);
@@ -22,9 +23,9 @@ router.get('/', getAllCategories);
 router.get('/:slug', getCategoryBySlug);
 
 //PUT api/categories/:slug
-router.patch('/:slug', adminOnly, validate(updateCategorySchema), updateCategoryBySlug);
+router.patch('/:slug', authenticateJWT, adminOnly, validate(updateCategorySchema), updateCategoryBySlug);
 
 //DELETE /api/categories/:slug
-router.delete('/:slug', adminOnly, deleteCategoryBySlug);
+router.delete('/:slug', authenticateJWT, adminOnly, deleteCategoryBySlug);
 
 export default router;
