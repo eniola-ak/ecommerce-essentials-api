@@ -3,9 +3,9 @@ import { Op } from 'sequelize';
 import slugify from 'slugify';
 
 export const createNewProduct = async (data: any) => {
-  const { title, price, stockQuantity, categoryId } = data;
+  const { title, price, stockQuantity, categoryId, image } = data;
 
-  if (!title || !price || !stockQuantity || !categoryId) {
+  if (!title || !price || !stockQuantity || !categoryId || !image) {
     throw new Error('Missing required fields');
   }
 
@@ -35,4 +35,37 @@ export const getProducts = async (query: any) => {
 
 export const getProductBySlug = (slug: string) => {
   return productRepo.findProductBySlug(slug);
+};
+
+export const updateProductBySlug = async (
+  slug: string,
+  updates: {title?: string; slug?: string; price?: number; stockQuantity?: number; categoryId?: number; description?: string; image?: string;
+  }) => {
+  const product = await productRepo.findProductBySlug(slug);
+  if (!product) throw new Error('Product not found.');
+
+  if (updates.slug && updates.slug !== slug) {
+    const existing = await productRepo.findProductBySlug(updates.slug);
+    if (existing) throw new Error('Another product with this slug already exists.');
+    product.slug = updates.slug;
+  }
+
+  if (updates.title && !updates.slug) {
+    product.slug = slugify(updates.title, { lower: true });
+  }
+
+  product.title = updates.title ?? product.title;
+  product.price = updates.price ?? product.price;
+  product.stockQuantity = updates.stockQuantity ?? product.stockQuantity;
+  product.categoryId = updates.categoryId ?? product.categoryId;
+  product.description = updates.description ?? product.description;
+  product.image=updates.image ?? product.image; 
+
+  return productRepo.updateProduct(product);
+};
+
+export const deleteProductBySlug = async (slug: string) => {
+  const product = await productRepo.findProductBySlug(slug);
+  if (!product) throw new Error('Product not found.');
+  return productRepo.deleteProduct(product);
 };

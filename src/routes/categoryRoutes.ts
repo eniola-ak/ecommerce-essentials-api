@@ -7,11 +7,13 @@ import {
   deleteCategoryBySlug,
 } from '../controllers/categoryController';
 import { adminOnly } from '../middleware/adminOnly';
+import { validate } from '../middleware/validate';
+import { createCategorySchema, updateCategorySchema } from '../validations/categoryValidation';
 const router = Router();
 
 
 // POST /api/categories - Create a category
-router.post('/', adminOnly, createCategory);
+router.post('/', adminOnly, validate(createCategorySchema), createCategory);
 
 // GET /api/categories - Show all categories
 router.get('/', getAllCategories);
@@ -20,7 +22,7 @@ router.get('/', getAllCategories);
 router.get('/:slug', getCategoryBySlug);
 
 //PUT api/categories/:slug
-router.put('/:slug', adminOnly, updateCategoryBySlug);
+router.put('/:slug', adminOnly, validate(updateCategorySchema), updateCategoryBySlug);
 
 //DELETE /api/categories/:slug
 router.delete('/:slug', adminOnly, deleteCategoryBySlug);
