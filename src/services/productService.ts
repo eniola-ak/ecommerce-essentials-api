@@ -3,17 +3,16 @@ import { Op } from 'sequelize';
 import slugify from 'slugify';
 import { CreateProduct, UpdateProduct } from '../interface/productInterface';
 
-const generateSlug = (title: string) => slugify(title, { lower: true });
 
 export const createNewProduct = async (data: CreateProduct) => {
-  const slug = generateSlug(data.title);
+  const slug = slugify(data.title,{ lower: true });
 
   const existing = await productRepo.findProductBySlug(slug);
   if (existing) {
     throw new Error('Product with this slug already exists.');
   }
 
-  return productRepo.createProduct({ ...data, slug });
+  return productRepo.createProduct(data);
 };
 
 export const getProducts = async (query: any) => {
@@ -46,14 +45,12 @@ export const updateProductBySlug = async (
   if (!product) throw new Error('Product not found.');
 
   if (updates.title) {
-    const regeneratedSlug = generateSlug(updates.title);
+    const newSlug = slugify(updates.title, { lower: true });
 
-    if (regeneratedSlug !== slug) {
-      const existing = await productRepo.findProductBySlug(regeneratedSlug);
+    if (newSlug !== slug) {
+      const existing = await productRepo.findProductBySlug(newSlug);
       if (existing) throw new Error('Another product with this slug already exists.');
     }
-
-    updates.slug = regeneratedSlug;
   }
 
   return productRepo.updateProduct(product, updates);

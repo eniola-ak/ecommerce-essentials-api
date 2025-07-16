@@ -1,7 +1,8 @@
 import { Product } from '../models/Product';
+import { CreateProduct } from '../interface/productInterface';
 import { Op } from 'sequelize';
 
-export const createProduct = (data: any) => {
+export const createProduct = (data: CreateProduct) => {
   return Product.create(data);
 };
 

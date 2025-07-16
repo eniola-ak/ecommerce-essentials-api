@@ -2,10 +2,10 @@ import { z } from 'zod';
 
 const baseCategorySchema = z.object({
   name: z.string().min(1),
-  description: z.string().optional(),
+  description: z.string(),
 });
 
-export const createCategorySchema = baseCategorySchema.strict();
+export const createCategorySchema = baseCategorySchema.strict().partial({description: true});
 
 export const updateCategorySchema = baseCategorySchema
   .partial()
