@@ -3,6 +3,7 @@ dotenv.config();
 import express from 'express';
 import { sequelize } from './models';
 import categoryRoutes from './routes/categoryRoutes';
+import productRoutes from './routes/productRoutes';
 
 /*sequelize.sync({ alter: true }) 
   .then(() => {
@@ -18,6 +19,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use('/api/categories', categoryRoutes);
+app.use('/api/products', productRoutes);
 
 app.get('/', (_req, res) => {
   res.send('Homepage');
