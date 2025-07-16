@@ -3,12 +3,8 @@ import * as categoryService from '../services/categoryService';
 
 export const createCategory = async (req: Request, res: Response) => {
   try {
-    const { name, slug, description } = req.body;
-    if (!name || !slug) {
-      res.status(400).json({ message: 'Name and slug are required.' });
-    }
-   
-    const category = await categoryService.createNewCategory(name, slug, description);
+    const { name, description } = req.body;
+    const category = await categoryService.createNewCategory({name, description});
     res.status(201).json(category);
   } catch (error: any) {
     res.status(error.message.includes('exists') ? 409 : 400).json({ message: error.message });

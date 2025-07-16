@@ -1,4 +1,5 @@
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import slugify from 'slugify';
 
 interface CategoryAttributes {
   id: number;
@@ -29,12 +30,29 @@ export class Category extends Model<CategoryAttributes, CategoryCreationAttribut
           type: DataTypes.STRING,
           allowNull: false,
         },
-        slug: DataTypes.STRING,
-        description: DataTypes.STRING,
+        slug: {
+          type: DataTypes.STRING, 
+          unique: true,
+        },
+
+        description: {type: DataTypes.STRING,}
       },
       {
         sequelize,
         tableName: 'Category',
+
+        hooks: {
+          beforeCreate: (category: Category) => {
+            if (category.name) {
+              category.slug = slugify(category.name, { lower: true });
+            }
+          },
+          beforeUpdate: (category: Category) => {
+            if (category.changed('name')) {
+              category.slug = slugify(category.name, { lower: true });
+            }
+          }
+        }
       }
     );
     return Category;

@@ -1,13 +1,15 @@
 import { z } from 'zod';
 
-export const createCategorySchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  slug: z.string().optional(),
-  description: z.string().optional(),
+const baseCategorySchema = z.object({
+  name: z.string().min(1),
+  description: z.string(),
 });
 
-export const updateCategorySchema = z.object({
-  name: z.string().optional(),
-  description: z.string().optional(),
-  newSlug: z.string().optional(), 
-});
+export const createCategorySchema = baseCategorySchema.strict().partial({description: true});
+
+export const updateCategorySchema = baseCategorySchema
+  .partial()
+  .strict()
+  .refine(data => Object.keys(data).length > 0, {
+    message: 'At least one field must be provided to update the category.',
+  });

@@ -1,7 +1,8 @@
 import { Product } from '../models/Product';
+import { CreateProduct } from '../interface/productInterface';
 import { Op } from 'sequelize';
 
-export const createProduct = (data: any) => {
+export const createProduct = (data: CreateProduct) => {
   return Product.create(data);
 };
 
@@ -21,8 +22,8 @@ export const findProductBySlug = (slug: string) => {
   });
 };
 
-export const updateProduct = async (product: Product) => {
-  return product.save();
+export const updateProduct = async (product: Product, updates: Partial<Product>) => {
+  return product.update(updates);
 };
 
 export const deleteProduct = async (product: Product) => {

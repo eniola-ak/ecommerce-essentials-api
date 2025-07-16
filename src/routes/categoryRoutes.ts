@@ -22,7 +22,7 @@ router.get('/', getAllCategories);
 router.get('/:slug', getCategoryBySlug);
 
 //PUT api/categories/:slug
-router.put('/:slug', adminOnly, validate(updateCategorySchema), updateCategoryBySlug);
+router.patch('/:slug', adminOnly, validate(updateCategorySchema), updateCategoryBySlug);
 
 //DELETE /api/categories/:slug
 router.delete('/:slug', adminOnly, deleteCategoryBySlug);
