@@ -38,16 +38,10 @@ export class User extends Model<UserAttributes, UserCreationAttributes>
           type: DataTypes.STRING,
           allowNull: false,
           unique: true,
-          validate: {
-            isEmail: true,
-          },
         },
         password: {
           type: DataTypes.STRING,
           allowNull: false,
-          validate: {
-            len: [6, 100],
-          },
         },
         role: {
           type: DataTypes.ENUM('user', 'admin'),

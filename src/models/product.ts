@@ -1,4 +1,5 @@
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import slugify from 'slugify';
 
 interface ProductAttributes {
   id: number;
@@ -66,7 +67,20 @@ export class Product
         sequelize,
         tableName: 'Product',
         modelName: 'Product',
-        timestamps: false, // change to true if you have createdAt/updatedAt
+        timestamps: false, 
+        
+        hooks: {
+          beforeCreate: (product: Product) => { 
+            if (product.title) {
+              product.slug = slugify(product.title, { lower: true });
+            }
+          },
+          beforeUpdate: (product: Product) => {
+            if (product.changed('title')) {
+              product.slug = slugify(product.title, { lower: true });
+            }
+          }
+        }
       }
     );
 

@@ -6,10 +6,11 @@ const baseProductSchema = z.object({
   stockQuantity: z.number().nonnegative(),
   categoryId: z.number().int().positive(),
   image: z.string().url(),
-  description: z.string().optional(),
+  description: z.string(),
 });
 
-export const createProductSchema = baseProductSchema.strict();
+export const createProductSchema = baseProductSchema.strict().partial({
+  description: true,});
 
 export const updateProductSchema = baseProductSchema
   .partial()

@@ -20,7 +20,6 @@ export const adminOnly = (req: Request, res: Response, next: NextFunction): void
       return;
     }
 
-    // Attach user to request
     (req as any).user = decoded;
 
     next();
