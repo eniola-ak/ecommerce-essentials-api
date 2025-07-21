@@ -4,6 +4,7 @@ import express from 'express';
 import { sequelize } from './models';
 import categoryRoutes from './routes/categoryRoutes';
 import productRoutes from './routes/productRoutes';
+import userRoutes from './routes/userRoutes';
 
 /*sequelize.sync({ alter: true }) 
   .then(() => {
@@ -20,6 +21,7 @@ app.use(express.json());
 
 app.use('/api/categories', categoryRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/auth', userRoutes)
 
 app.get('/', (_req, res) => {
   res.send('Homepage');

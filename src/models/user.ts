@@ -1,20 +1,30 @@
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import bcrypt from 'bcrypt';
+
 
 interface UserAttributes {
   userId: number;
   email: string;
   token?: string;
   username: string;
+  password: string;
+  role: 'user' | 'admin';
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'userId'> {}
+interface UserCreationAttributes extends Optional<UserAttributes, 'userId'|'role'|'token' > {}
 
 export class User extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes {
-  public userId!: number;
-  public email!: string;
-  public token?: string;
-  public username!: string;
+  declare userId: number;
+  declare email: string;
+  declare token?: string;
+  declare username: string;
+  declare password: string;
+  declare role: 'user' | 'admin';
+
+  async validatePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+  }
 
   static initModel(sequelize: Sequelize): typeof User {
     User.init(
@@ -29,6 +39,15 @@ export class User extends Model<UserAttributes, UserCreationAttributes>
           allowNull: false,
           unique: true,
         },
+        password: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        role: {
+          type: DataTypes.ENUM('user', 'admin'),
+          defaultValue: 'user',
+          allowNull: false,
+        },
         token: DataTypes.STRING,
         username: {
           type: DataTypes.STRING,
@@ -38,7 +57,20 @@ export class User extends Model<UserAttributes, UserCreationAttributes>
       {
         sequelize,
         tableName: 'User',
-        timestamps: false,
+        timestamps: true,
+        underscored: true,
+        hooks: {
+          beforeCreate: async (user: User) => {
+            if (user.changed('password')) {
+              user.password = await bcrypt.hash(user.password, 10);
+            }
+          },
+          beforeUpdate: async (user: User) => {
+            if (user.changed('password')) {
+              user.password = await bcrypt.hash(user.password, 10);
+            }
+          }
+        }
       }
     );
     return User;
