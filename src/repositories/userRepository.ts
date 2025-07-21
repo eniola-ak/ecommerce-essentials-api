@@ -12,7 +12,8 @@ export const findUserById = async (userId: number) => {
 export const createUser = async (
   email: string,
   username: string,
-  password: string
+  password: string,
+  role: 'customer' | 'admin' = 'customer'
 ) => {
   return await User.create({ email, username, password });
 };
