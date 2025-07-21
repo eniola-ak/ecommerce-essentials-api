@@ -44,8 +44,8 @@ export class User extends Model<UserAttributes, UserCreationAttributes>
           allowNull: false,
         },
         role: {
-          type: DataTypes.ENUM('user', 'admin'),
-          defaultValue: 'user',
+          type: DataTypes.ENUM('customer', 'admin'),
+          defaultValue: 'customer',
           allowNull: false,
         },
         token: DataTypes.STRING,

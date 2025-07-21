@@ -9,7 +9,7 @@ const baseUserSchema = z
   .strict();
 
 export const registerUserSchema = baseUserSchema
-  .extend({confirmPassword:z.string().min(6)})
+  .extend({confirmPassword:z.string().min(6), role: z.enum(['user', 'admin']).default('user')})
   .strict().refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ['confirmPassword'],

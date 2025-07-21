@@ -4,7 +4,7 @@ import { RegisterUserInput, LoginUserInput } from '../interface/userInterface';
 import bcrypt from 'bcrypt';
 
 export const register= async (input:RegisterUserInput) => {
-    const { username, email, password, confirmPassword } = input;
+    const { username, email, password, confirmPassword,role } = input;
     if (password !== confirmPassword) {
         throw new Error('Passwords do not match');
     }
@@ -13,7 +13,7 @@ export const register= async (input:RegisterUserInput) => {
         throw new Error('User with this email already exists');
     }
 
-    const user = await userRepo.createUser(email, username, password );
+    const user = await userRepo.createUser(email, username, password,role );
     const token = generateToken({
         id: user.userId,
         email: user.email,

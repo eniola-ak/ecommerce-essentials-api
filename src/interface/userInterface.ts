@@ -4,7 +4,7 @@ import { Request } from 'express';
 export interface TokenPayload {
   id: number;
   email: string;
-  role: 'user' | 'admin';
+  role: 'customer' | 'admin';
 }
 export interface AuthenticatedRequest extends Request {
   user?: any;
@@ -17,5 +17,5 @@ export interface UserInput {
   email: string;
   username: string;
   password: string;
-  role: 'user' | 'admin';
+  role: 'customer' | 'admin';
 }
