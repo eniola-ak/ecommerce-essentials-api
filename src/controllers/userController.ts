@@ -35,7 +35,11 @@ export const getCurrentUser = async (req: AuthenticatedRequest, res: Response) =
   }
 };
 
+<<<<<<< HEAD
 export const createUserWithRole = async (req: Request, res: Response): Promise<void> => {
+=======
+/*export const createUserWithRole = async (req: Request, res: Response): Promise<void> => {
+>>>>>>> 2936e94 (Save untracked user files before merging)
   const { email, username, password, role } = req.body;
 
   try {
@@ -44,7 +48,11 @@ export const createUserWithRole = async (req: Request, res: Response): Promise<v
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
+<<<<<<< HEAD
 };
+=======
+};*/
+>>>>>>> 2936e94 (Save untracked user files before merging)
 
 export const promoteUser = async (req: Request, res: Response): Promise<void> => {
   const { email } = req.body;
