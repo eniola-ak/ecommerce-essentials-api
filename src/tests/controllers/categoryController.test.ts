@@ -26,13 +26,13 @@ describe('Category Controller', () => {
   });
 
   describe('createCategory', () => {
-    it('should return 400 if name or slug is missing', async () => {
-      req.body = { description: 'Missing name and slug' };
+    it('should return 400 if name is missing', async () => {
+      req.body = { description: 'Missing name' };
 
       await createCategory(req as Request, res as Response);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ message: 'Name and slug are required.' });
+      expect(json).toHaveBeenCalledWith({ message: 'Name is required.' });
     });
 
     it('should return 409 if category with slug already exists', async () => {

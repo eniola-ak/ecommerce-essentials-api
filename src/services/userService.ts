@@ -57,11 +57,7 @@ export const getCurrentUserById = async (userId: number) => {
   };
 };
 
-<<<<<<< HEAD
-export const createUserWithRole = async (
-=======
 /*export const createUserWithRole = async (
->>>>>>> 2936e94 (Save untracked user files before merging)
   email: string,
   username: string,
   password: string,
@@ -73,10 +69,7 @@ export const createUserWithRole = async (
   const hashed = await bcrypt.hash(password, 10);
   return await userRepo.createUserWithRole({email, username, password, role});
 };
-<<<<<<< HEAD
-=======
 */
->>>>>>> 2936e94 (Save untracked user files before merging)
 
 export const promoteUserToAdmin = async (email: string) => {
   return await userRepo.promoteToAdminByEmail(email);
