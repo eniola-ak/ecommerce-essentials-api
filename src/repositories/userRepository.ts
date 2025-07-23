@@ -15,7 +15,7 @@ export const createUser = async (
   password: string,
   role: 'customer' | 'admin' = 'customer'
 ) => {
-  return await User.create({ email, username, password });
+  return await User.create({ email, username, password,role });
 };
 
 export const updatePassword = async (
