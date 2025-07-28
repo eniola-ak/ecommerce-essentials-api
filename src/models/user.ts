@@ -8,7 +8,7 @@ interface UserAttributes {
   token?: string;
   username: string;
   password: string;
-  role: 'customer' | 'admin';
+  role: 'user' | 'admin';
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'userId'|'role'|'token' > {}
@@ -20,7 +20,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes>
   declare token?: string;
   declare username: string;
   declare password: string;
-  declare role: 'customer' | 'admin';
+  declare role: 'user' | 'admin';
 
   async validatePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
