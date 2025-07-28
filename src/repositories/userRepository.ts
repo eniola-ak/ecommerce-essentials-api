@@ -15,7 +15,7 @@ export const createUser = async (
   password: string,
   role: 'customer' | 'admin' = 'customer'
 ) => {
-  return await User.create({ email, username, password });
+  return await User.create({ email, username, password,role });
 };
 
 export const updatePassword = async (
@@ -31,15 +31,9 @@ export const updatePassword = async (
   return user;
 };
 
-<<<<<<< HEAD
-export const createUserWithRole = async (data: UserInput) => {
-  return await User.create(data);
-};
-=======
 /*export const createUserWithRole = async (data: UserInput) => {
   return await User.create(data);
 };*/
->>>>>>> 2936e94 (Save untracked user files before merging)
 
 export const promoteToAdminByEmail = async (email: string) => {
   const user = await findUserByEmail(email);

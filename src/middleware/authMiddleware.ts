@@ -8,7 +8,8 @@ export const authenticateJWT = (
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.headers['authorization'];
+    console.log('Request Headers:', req.headers);
+  const authHeader = req.get('Authorization') || '';
   
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     res.status(401).json({ error: 'Authorization token missing or malformed' });

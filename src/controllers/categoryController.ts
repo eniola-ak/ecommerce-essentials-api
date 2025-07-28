@@ -4,6 +4,10 @@ import * as categoryService from '../services/categoryService';
 export const createCategory = async (req: Request, res: Response) => {
   try {
     const { name, description } = req.body;
+    if (!name) {
+      res.status(400).json({ message: 'Name is required.' });
+      return;
+    }
     const category = await categoryService.createNewCategory({name, description});
     res.status(201).json(category);
   } catch (error: any) {
