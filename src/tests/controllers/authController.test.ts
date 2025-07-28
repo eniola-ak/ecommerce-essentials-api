@@ -3,7 +3,6 @@ import { verifyToken } from '../../utils/jwt';
 import { AuthenticatedRequest } from '../../interface/userInterface';
 import { Response, NextFunction } from 'express';
 
-// Mock verifyToken to return a dummy decoded payload
 jest.mock('../../utils/jwt', () => ({
   verifyToken: jest.fn(),
 }));
@@ -21,7 +20,6 @@ describe('authenticateJWT middleware', () => {
   });
 
   it('should call next if token is valid', () => {
-    // Arrange
     const token = 'validtoken';
     (verifyToken as jest.Mock).mockReturnValue({ id: 123 });
 
@@ -33,10 +31,8 @@ describe('authenticateJWT middleware', () => {
       },
     } as unknown as AuthenticatedRequest;
 
-    // Act
     authenticateJWT(mockReq, mockRes, mockNext);
 
-    // Assert
     expect(verifyToken).toHaveBeenCalledWith(token);
     expect(mockReq.user).toEqual({ id: 123 });
     expect(mockNext).toHaveBeenCalled();
