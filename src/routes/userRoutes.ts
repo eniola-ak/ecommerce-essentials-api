@@ -3,7 +3,7 @@ import { registerUser,loginUser,getCurrentUser,promoteUser } from '../controller
 import { validate } from '../middleware/validate';
 import { registerUserSchema, loginUserSchema,} from '../validations/userValidations';
 import { authenticateJWT } from '../middleware/authMiddleware';
-import { adminOnly } from '../middleware/adminOnly';
+import { adminOnly } from '../middleware/roleMiddleware';
 
 const router = express.Router();
 

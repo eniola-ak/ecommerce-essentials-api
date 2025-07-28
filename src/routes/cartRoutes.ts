@@ -1,7 +1,7 @@
 import express from 'express';
 import { getCart, addItem } from '../controllers/cartController';
 import { authenticateJWT } from '../middleware/authMiddleware';
-import { customerOnly } from '../middleware/adminOnly';
+import { customerOnly } from '../middleware/roleMiddleware';
 
 const router = express.Router();
 

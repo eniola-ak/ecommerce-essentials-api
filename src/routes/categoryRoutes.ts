@@ -6,7 +6,7 @@ import {
   updateCategoryBySlug,
   deleteCategoryBySlug,
 } from '../controllers/categoryController';
-import { adminOnly } from '../middleware/adminOnly';
+import { adminOnly } from '../middleware/roleMiddleware';
 import { validate } from '../middleware/validate';
 import { createCategorySchema, updateCategorySchema } from '../validations/categoryValidation';
 import { authenticateJWT } from '../middleware/authMiddleware'; 

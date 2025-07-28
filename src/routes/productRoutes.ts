@@ -9,7 +9,7 @@ import {
 import { validate } from '../middleware/validate';
 import { createProductSchema, updateProductSchema } from '../validations/productValidation';
 
-import { adminOnly } from '../middleware/adminOnly';
+import { adminOnly } from '../middleware/roleMiddleware';
 import { authenticateJWT } from '../middleware/authMiddleware';
 
 const router = Router();
