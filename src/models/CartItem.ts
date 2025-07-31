@@ -65,6 +65,7 @@ export class CartItem extends Model<CartItemAttributes, CartItemCreationAttribut
       {
         sequelize,
         tableName: 'CartItem',
+        timestamps: true,
       }
     );
     return CartItem;

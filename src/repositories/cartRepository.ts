@@ -3,7 +3,18 @@ import { Cart, CartItem, Product, User } from '../models';
 export const findCartByUserId = async (userId: number) => {
   return await Cart.findOne({
     where: { userId },
-    include: [{ model: CartItem, include: [Product] }]
+    include: [
+      {
+        model: CartItem,
+        as: 'items',
+        include: [
+          {
+            model: Product,
+            as: 'product'
+          }
+        ]
+      }
+    ]
   });
 };
 

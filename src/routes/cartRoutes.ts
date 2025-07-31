@@ -5,7 +5,9 @@ import { customerOnly } from '../middleware/roleMiddleware';
 
 const router = express.Router();
 
-router.get('/cart', authenticateJWT, customerOnly, getCart);
-router.post('/cart/items', authenticateJWT, customerOnly, addItem);
+const customerMiddleware=[authenticateJWT,customerOnly]
+
+router.get('/', customerMiddleware, getCart);
+router.post('/items', customerMiddleware, addItem);
 
 export default router;
