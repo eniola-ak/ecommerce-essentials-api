@@ -58,7 +58,6 @@ export class User extends Model<UserAttributes, UserCreationAttributes>
         sequelize,
         tableName: 'User',
         timestamps: true,
-        underscored: true,
         hooks: {
           beforeCreate: async (user: User) => {
             if (user.changed('password')) {
