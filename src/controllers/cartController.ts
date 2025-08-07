@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import * as cartService from '../services/cartService';
 import { AuthenticatedRequest } from '../interface/userInterface';
 import { updateCartItemSchema } from '../validations/cartValidation';
