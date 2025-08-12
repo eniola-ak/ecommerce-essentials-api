@@ -5,6 +5,8 @@ import { Product } from './Product';
 import { User } from './User';
 import { Cart } from './Cart';
 import { CartItem } from './CartItem';
+import { Order } from './Order';
+import { OrderItem } from './OrderItem';
 
 const sequelize = new Sequelize(
   process.env.DB_NAME!,
@@ -22,6 +24,8 @@ Product.initModel(sequelize);
 User.initModel(sequelize);
 Cart.initModel(sequelize);
 CartItem.initModel(sequelize);
+Order.initModel(sequelize);
+OrderItem.initModel(sequelize);
 
 // Associations
 Category.hasMany(Product, { foreignKey: 'categoryId', as: 'products' });
@@ -32,5 +36,10 @@ Cart.hasMany(CartItem, {foreignKey: 'cartId',as: 'items',});
 CartItem.belongsTo(Cart, {foreignKey: 'cartId',as: 'cart',});
 CartItem.belongsTo(Product, {foreignKey: 'productId',as: 'product',});
 Product.hasMany(CartItem, {foreignKey: 'productId',as: 'cartItems',});
+Order.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Order, { foreignKey: 'userId' });
+Order.hasMany(OrderItem, { foreignKey: 'orderId', as: 'orderItems' });
+OrderItem.belongsTo(Order, { foreignKey: 'orderId' });
+OrderItem.belongsTo(Product, { foreignKey: 'productId', as: 'productDetails' });
 
 export { sequelize, Category, Product, User, Cart, CartItem };

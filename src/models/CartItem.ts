@@ -46,21 +46,6 @@ export class CartItem extends Model<CartItemAttributes, CartItemCreationAttribut
           type: DataTypes.INTEGER,
           allowNull: false,
         },
-        productDetails: {
-          type: DataTypes.STRING,
-        },
-        slug: {
-          type: DataTypes.STRING,
-        },
-        title: {
-          type: DataTypes.STRING,
-        },
-        price: {
-          type: DataTypes.FLOAT,
-        },
-        image: {
-          type: DataTypes.STRING,
-        },
       },
       {
         sequelize,
