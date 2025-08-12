@@ -65,3 +65,16 @@ export const removeCartItem = async (itemId: number, userId: number) => {
     throw new Error('Cart item not found');
   }
 };
+
+export const clearCart = async (userId: number) => {
+  const cart = await Cart.findOne({ where: { userId } });
+
+  if (!cart) {
+    return;
+  }
+  await CartItem.destroy({
+    where: { cartId: cart.cartId },
+  }); // Optionally reset totalAmount if you store it in Cart
+  cart.totalAmount = 0;
+  await cart.save();
+};

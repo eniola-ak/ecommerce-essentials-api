@@ -8,7 +8,7 @@ export interface OrderItemAttributes {
   price: number;
 }
 
-export interface OrderItemCreationAttributes extends Optional<OrderItemAttributes, 'id'> {}
+export interface OrderItemCreationAttributes extends Optional<OrderItemAttributes, 'id'| 'orderId'> {}
 
 export class OrderItem extends Model<OrderItemAttributes, OrderItemCreationAttributes>
   implements OrderItemAttributes {

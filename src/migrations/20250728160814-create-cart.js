@@ -22,10 +22,6 @@ module.exports = {
         type: Sequelize.FLOAT,
         defaultValue: 0,
       },
-      cartItem: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('NOW'),

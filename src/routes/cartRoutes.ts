@@ -9,7 +9,7 @@ const customerMiddleware=[authenticateJWT,customerOnly]
 
 router.get('/', customerMiddleware, getCart);
 router.post('/items', customerMiddleware, addItem);
-router.put('/items/:itemId', authenticateJWT, customerMiddleware, updateCartItem);
-router.delete('/items/:itemId', authenticateJWT, customerMiddleware, deleteCartItem);
+router.put('/items/:itemId',  customerMiddleware, updateCartItem);
+router.delete('/items/:itemId', customerMiddleware, deleteCartItem);
 
 export default router;

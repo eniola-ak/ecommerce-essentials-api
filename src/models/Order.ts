@@ -1,4 +1,5 @@
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import { OrderItemCreationAttributes } from './OrderItem';
 
 export interface OrderAttributes {
   id: number;
@@ -11,7 +12,7 @@ export interface OrderAttributes {
 }
 
 export interface OrderCreationAttributes
-  extends Optional<OrderAttributes, 'id' | 'orderNumber' | 'orderStatus'> {}
+  extends Optional<OrderAttributes, 'id' | 'orderNumber' | 'orderStatus'> {orderItems?: OrderItemCreationAttributes[]}
 
 export class Order extends Model<OrderAttributes, OrderCreationAttributes>
   implements OrderAttributes {
