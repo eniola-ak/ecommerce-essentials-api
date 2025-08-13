@@ -21,7 +21,6 @@ export const createOrderFromCart = async (userId: number) => {
     throw new Error('Cart is empty');
   }
 
-  // 1️⃣ Check stock for each item
   for (const item of cart.items) {
     if (!item.product) {
       throw new Error(`Product details missing for productId: ${item.productId}`);
@@ -56,15 +55,12 @@ export const createOrderFromCart = async (userId: number) => {
 
   const order = await orderRepo.createOrder(orderData);
 
-  // 5️⃣ Reduce stock for each purchased product
   for (const item of cart.items) {
     await Product.update(
       { stockQuantity: item.product!.stockQuantity - item.quantity },
       { where: { id: item.productId } }
     );
   }
-
-  // 6️⃣ Clear the cart
   await cartRepo.clearCart(userId);
 
   return order;
