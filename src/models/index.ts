@@ -27,7 +27,6 @@ CartItem.initModel(sequelize);
 Order.initModel(sequelize);
 OrderItem.initModel(sequelize);
 
-// Associations
 Category.hasMany(Product, { foreignKey: 'categoryId', as: 'products' });
 Product.belongsTo(Category, { foreignKey: 'categoryId', as: 'category' });
 User.hasOne(Cart, {foreignKey: 'userId', as: 'cart',});
@@ -36,10 +35,11 @@ Cart.hasMany(CartItem, {foreignKey: 'cartId',as: 'items',});
 CartItem.belongsTo(Cart, {foreignKey: 'cartId',as: 'cart',});
 CartItem.belongsTo(Product, {foreignKey: 'productId',as: 'product',});
 Product.hasMany(CartItem, {foreignKey: 'productId',as: 'cartItems',});
-Order.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(Order, { foreignKey: 'userId' });
+Order.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+User.hasMany(Order, { foreignKey: 'userId', as: 'orders' });
 Order.hasMany(OrderItem, { foreignKey: 'orderId', as: 'orderItems' });
-OrderItem.belongsTo(Order, { foreignKey: 'orderId' });
-OrderItem.belongsTo(Product, { foreignKey: 'productId', as: 'productDetails' });
+OrderItem.belongsTo(Order, { foreignKey: 'orderId', as: 'order' });
+OrderItem.belongsTo(Product, { foreignKey: 'productId', as: 'product' });
+Product.hasMany(OrderItem, { foreignKey: 'productId', as: 'orderItems' });
 
-export { sequelize, Category, Product, User, Cart, CartItem };
+export { sequelize, Category, Product, User, Cart, CartItem,Order, OrderItem };

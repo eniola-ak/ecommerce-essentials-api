@@ -28,7 +28,7 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes>
     Order.init(
       {
         id: {
-          type: DataTypes.INTEGER.UNSIGNED,
+          type: DataTypes.INTEGER,
           autoIncrement: true,
           primaryKey: true,
         },
@@ -38,7 +38,7 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes>
           unique: true,
         },
         userId: {
-          type: DataTypes.INTEGER.UNSIGNED,
+          type: DataTypes.INTEGER,
           allowNull: false,
         },
         totalAmount: {
@@ -53,7 +53,7 @@ export class Order extends Model<OrderAttributes, OrderCreationAttributes>
       },
       {
         sequelize,
-        tableName: 'orders',
+        tableName: 'Order',
         timestamps: true,
       }
     );

@@ -13,7 +13,6 @@ export const validate = (schema: ZodSchema<any>) => {
       return;
     }
 
-    // Optionally override req.body with parsed data
     req.body = result.data;
     next();
   };

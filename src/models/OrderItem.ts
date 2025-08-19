@@ -45,7 +45,7 @@ export class OrderItem extends Model<OrderItemAttributes, OrderItemCreationAttri
       },
       {
         sequelize,
-        tableName: 'order_items',
+        tableName: 'OrderItem',
         timestamps: false,
       }
     );

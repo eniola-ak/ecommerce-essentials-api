@@ -6,27 +6,15 @@ import {
   updateCategoryBySlug,
   deleteCategoryBySlug,
 } from '../controllers/categoryController';
-import { adminOnly } from '../middleware/roleMiddleware';
 import { validate } from '../middleware/validate';
 import { createCategorySchema, updateCategorySchema } from '../validations/categoryValidation';
-import { authenticateJWT } from '../middleware/authMiddleware'; 
+import { adminOnly } from '../middleware/authMiddleware'; 
 const router = Router();
 
-const adminMiddlewares = [authenticateJWT,adminOnly];
-
-// POST /api/categories - Create a category
-router.post('/',adminMiddlewares, validate(createCategorySchema), createCategory);
-
-// GET /api/categories - Show all categories
+router.post('/',adminOnly, validate(createCategorySchema), createCategory);
 router.get('/', getAllCategories);
-
-// GET /api/categories/:slug - Show a category using slug
 router.get('/:slug', getCategoryBySlug);
-
-//PUT api/categories/:slug
-router.patch('/:slug', adminMiddlewares, validate(updateCategorySchema), updateCategoryBySlug);
-
-//DELETE /api/categories/:slug
-router.delete('/:slug', adminMiddlewares, deleteCategoryBySlug);
+router.patch('/:slug', adminOnly, validate(updateCategorySchema), updateCategoryBySlug);
+router.delete('/:slug', adminOnly, deleteCategoryBySlug);
 
 export default router;
