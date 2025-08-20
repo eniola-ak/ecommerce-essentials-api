@@ -4,9 +4,15 @@ import { Product } from '../models/Product';
 import { WhereOptions } from 'sequelize';
 import { User } from '../models/User';
 
-export const createOrder = async (orderData: OrderCreationAttributes & { orderItems?: any[] }) => {
+
+export const createOrder = async (orderData: OrderCreationAttributes & { orderItems: any[] }) => {
   return Order.create(orderData, {
-    include: [{ model: OrderItem, as: 'orderItems' }],
+    include: [
+      {
+        model: OrderItem,
+        as: 'orderItems', // must match Order.hasMany(OrderItem, { as: 'orderItems' })
+      },
+    ],
   });
 };
 
@@ -20,7 +26,7 @@ export const findOrderByNumber = async (orderNumber: string) => {
         include: [
           {
             model: Product,
-            as: 'productDetails',
+            as: 'product',
             attributes: ['slug', 'title'],
           },
         ],
@@ -38,7 +44,7 @@ export const findAllOrders = (filters: WhereOptions, limit: number, offset: numb
       {
         model: User,
         as: 'user',
-        attributes: ['id', 'name', 'email']
+        attributes: ['userId', 'email']
       },
       {
         model: OrderItem,

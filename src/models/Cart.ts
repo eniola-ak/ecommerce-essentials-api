@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 import { CartItemAttributes} from './CartItem';
 
-interface CartAttributes {
+export interface CartAttributes {
   cartId: number;
   userId: number;
   totalAmount: number;
@@ -10,7 +10,7 @@ interface CartAttributes {
   cartItem?: CartItemAttributes[]
 }
 
-interface CartCreationAttributes extends Optional<CartAttributes, 'cartId'> {}
+export interface CartCreationAttributes extends Optional<CartAttributes, 'cartId'> {}
 
 export class Cart extends Model<CartAttributes, CartCreationAttributes>
   implements CartAttributes {

@@ -1,20 +1,17 @@
 import { Cart, CartItem, Product, User } from '../models';
 
 export const findCartByUserId = async (userId: number) => {
-  return await Cart.findOrCreate({
+  return Cart.findOne({
     where: { userId },
-    defaults: {
-      userId,
-      totalAmount: 0,
-    },
     include: [
       {
         model: CartItem,
-        as: 'items',
+        as: 'items', // must match Cart.hasMany(CartItem, { as: 'items' })
         include: [
           {
             model: Product,
-            as: 'product',
+            as: 'product', // must match CartItem.belongsTo(Product, { as: 'product' })
+            attributes: ['id', 'price', 'stockQuantity', 'title'],
           },
         ],
       },

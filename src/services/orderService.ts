@@ -2,23 +2,24 @@ import * as orderRepo from '../repositories/orderRepository';
 import * as cartRepo from '../repositories/cartRepository';
 import { generateOrderNumber } from '../utils/orderUtils';
 import { OrderCreationAttributes} from '../models/Order';
+import { CartAttributes}from '../models/Cart';
+import { CartItemAttributes } from '../models/CartItem';
 import { CartItem } from '../models/CartItem';
 import { Product } from '../models/Product';
 import { WhereOptions} from 'sequelize';
 
-
-interface CartWithItems {
-  cartId: number;
-  userId: number;
-  totalAmount: number;
-  items: (CartItem & { product?: Product })[];
+interface CartWithItems extends CartAttributes {
+  items: (CartItemAttributes & {
+    product?: {
+      id: number;
+      price: string;
+      stockQuantity: number;
+      title: string;
+    };
+  })[];
 }
-
 export const createOrderFromCart = async (userId: number) => {
-  // Fetch the cart including items and products
-  const cartInstance = await cartRepo.findCartByUserId(userId);
-
-  const cart = cartInstance as unknown as CartWithItems;
+  const cart = (await cartRepo.findCartByUserId(userId)) as unknown as CartWithItems;
 
   if (!cart || !cart.items || cart.items.length === 0) {
     throw new Error('Cart is empty');
@@ -36,43 +37,25 @@ export const createOrderFromCart = async (userId: number) => {
     }
   }
 
-  // Calculate total amount
-  const totalAmount = cart.items.reduce((sum, item) => {
-    const price = parseFloat(item.product!.price.toString());
-    return sum + item.quantity * price;
-  }, 0);
+  const totalAmount = cart.items.reduce(
+    (sum, item) => sum + parseFloat(item.product!.price) * item.quantity,
+    0
+  );
 
-  // Prepare order data
-  const orderData: OrderCreationAttributes & {
-    orderItems: { productId: number; quantity: number; price: number }[];
-  } = {
+  const orderData = {
     orderNumber: generateOrderNumber(),
-    userId,
+    userId: cart.userId,
     totalAmount,
-    orderStatus: 'PENDING', // ✅ correct type
-    orderItems: cart.items.map((item) => ({
+    orderItems: cart.items.map(item => ({
       productId: item.productId,
       quantity: item.quantity,
-      price: parseFloat(item.product!.price.toString()),
+      price: parseFloat(item.product!.price),
     })),
   };
 
-  // Create order
-  const order = await orderRepo.createOrder(orderData);
-
-  // Update stock quantities
-  for (const item of cart.items) {
-    await Product.update(
-      { stockQuantity: item.product!.stockQuantity - item.quantity },
-      { where: { id: item.productId } }
-    );
-  }
-
-  // Clear the cart
-  await cartRepo.clearCart(userId);
-
-  return order;
+  return orderRepo.createOrder(orderData);
 };
+
 
 export const getOrderByNumber = async (
   orderNumber: string,
