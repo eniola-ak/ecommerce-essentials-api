@@ -4,8 +4,10 @@ import { Product } from '../models/Product';
 import { WhereOptions } from 'sequelize';
 import { User } from '../models/User';
 
+export type OrderStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
 
-export const createOrder = async (orderData: OrderCreationAttributes & { orderItems: any[] }) => {
+
+export const createOrder = async (orderData: OrderCreationAttributes & { orderItems: any[] }):Promise<Order> => {
   return Order.create(orderData, {
     include: [
       {
@@ -16,7 +18,7 @@ export const createOrder = async (orderData: OrderCreationAttributes & { orderIt
   });
 };
 
-export const findOrderByNumber = async (orderNumber: string) => {
+export const findOrderByNumber = async (orderNumber: string):Promise<Order | null> => {
   return Order.findOne({
     where: { orderNumber },
     include: [
@@ -35,11 +37,12 @@ export const findOrderByNumber = async (orderNumber: string) => {
   });
 };
 
-export const findAllOrders = (filters: WhereOptions, limit: number, offset: number) => {
+export const findAllOrders = (filters: WhereOptions, limit: number, offset: number):Promise<{ rows: Order[]; count: number }> => {
   return Order.findAndCountAll({
     where: filters,
     limit,
     offset,
+    distinct: true,
     include: [
       {
         model: User,
@@ -64,15 +67,12 @@ export const findAllOrders = (filters: WhereOptions, limit: number, offset: numb
 
 export const updateOrderStatus = async (
   orderNumber: string,
-  newStatus: 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED'
-) => {
+  newStatus: OrderStatus
+): Promise<Order | null> => {
   const order = await Order.findOne({ where: { orderNumber } });
   if (!order) return null;
 
-  await Order.update(
-    { orderStatus: newStatus },
-    { where: { orderNumber } }
-  );
+  await Order.update({ orderStatus: newStatus }, { where: { orderNumber } });
 
-  return await Order.findOne({ where: { orderNumber } }); // return fresh copy
+  return await Order.findOne({ where: { orderNumber } }); 
 };

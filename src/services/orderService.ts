@@ -1,12 +1,14 @@
 import * as orderRepo from '../repositories/orderRepository';
 import * as cartRepo from '../repositories/cartRepository';
 import { generateOrderNumber } from '../utils/orderUtils';
-import { OrderCreationAttributes} from '../models/Order';
+import { PaginatedOrders } from '../interface/orderInterface';
 import { CartAttributes}from '../models/Cart';
 import { CartItemAttributes } from '../models/CartItem';
-import { CartItem } from '../models/CartItem';
-import { Product } from '../models/Product';
+import { Order } from '../models/Order';
 import { WhereOptions} from 'sequelize';
+import { OrderStatus } from '../repositories/orderRepository';
+
+
 
 interface CartWithItems extends CartAttributes {
   items: (CartItemAttributes & {
@@ -18,14 +20,13 @@ interface CartWithItems extends CartAttributes {
     };
   })[];
 }
-export const createOrderFromCart = async (userId: number) => {
+export const createOrderFromCart = async (userId: number): Promise<Order> => {
   const cart = (await cartRepo.findCartByUserId(userId)) as unknown as CartWithItems;
 
   if (!cart || !cart.items || cart.items.length === 0) {
     throw new Error('Cart is empty');
   }
 
-  // Check stock availability
   for (const item of cart.items) {
     if (!item.product) {
       throw new Error(`Product details missing for productId: ${item.productId}`);
@@ -61,7 +62,7 @@ export const getOrderByNumber = async (
   orderNumber: string,
   userId: number,
   isAdmin: boolean
-) => {
+): Promise<Order> => {
   const order = await orderRepo.findOrderByNumber(orderNumber);
 
   if (!order) {
@@ -79,7 +80,7 @@ export const getAllOrders = async (
   status?: string,
   page: number = 1,
   limit: number = 10
-) => {
+):Promise<PaginatedOrders>  => {
   const offset = (page - 1) * limit;
   const filters: WhereOptions = {};
   
@@ -101,15 +102,18 @@ export const getAllOrders = async (
 
 export const changeOrderStatus = async (
   orderNumber: string,
-  newStatus: 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED'
-) => {
-  
-  const validStatuses = ['PENDING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
-  if (!validStatuses.includes(newStatus)) {
-    throw new Error('Invalid order status');
+  newStatus: string
+): Promise<Order | null> => {
+  if (!newStatus) {
+    throw new Error('orderStatus is required');
   }
 
-  const order = await orderRepo.updateOrderStatus(orderNumber, newStatus);
+  const validStatuses: OrderStatus[] = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
+  if (!validStatuses.includes(newStatus as OrderStatus)) {
+    throw new Error('Invalid orderStatus');
+  }
+
+  const order = await orderRepo.updateOrderStatus(orderNumber, newStatus as OrderStatus);
   if (!order) {
     throw new Error('Order not found');
   }
