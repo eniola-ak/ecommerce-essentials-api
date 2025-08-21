@@ -95,6 +95,8 @@ describe('Order Controller', () => {
     });
 
     it('should return 400 if orderStatus is missing', async () => {
+      (orderService.changeOrderStatus as jest.Mock).mockRejectedValue(new Error('orderStatus is required'));
+
       const mockReq = { params: { orderNumber: 'ORDER-1' }, body: {} } as unknown as AuthenticatedRequest;
 
       await orderController.updateOrderStatus(mockReq, mockRes as Response);
@@ -104,6 +106,8 @@ describe('Order Controller', () => {
     });
 
     it('should return 400 for invalid orderStatus', async () => {
+      (orderService.changeOrderStatus as jest.Mock).mockRejectedValue(new Error('Invalid orderStatus'));
+
       const mockReq = { params: { orderNumber: 'ORDER-1' }, body: { orderStatus: 'INVALID' } } as unknown as AuthenticatedRequest;
 
       await orderController.updateOrderStatus(mockReq, mockRes as Response);
