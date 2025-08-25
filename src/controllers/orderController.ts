@@ -60,7 +60,6 @@ export const getAdminOrders = async (req: AuthenticatedRequest, res: Response):P
       },
     });
   } catch (error: any) {
-    console.error(error);
     res.status(500).json({ success: false, message: error.message || 'Failed to fetch orders' });
   }
 };

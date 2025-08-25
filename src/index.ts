@@ -9,6 +9,7 @@ import cartRoutes from './routes/cartRoutes';
 import orderRoutes from './routes/orderRoutes';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
+import helmet from 'helmet';
 
 
 const swaggerDocument = YAML.load('./src/docs/swagger.yaml');
