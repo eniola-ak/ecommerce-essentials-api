@@ -103,7 +103,7 @@ export const getAllOrders = async (
 export const changeOrderStatus = async (
   orderNumber: string,
   newStatus: string
-): Promise<Order | null> => {
+): Promise<Order> => {
   if (!newStatus) {
     throw new Error('orderStatus is required');
   }

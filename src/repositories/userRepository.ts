@@ -1,11 +1,11 @@
 import { User } from '../models/User';
 import { UserInput } from '../interface/userInterface';
 
-export const findUserByEmail = async (email: string) => {
+export const findUserByEmail = async (email: string) : Promise<User | null> => {
   return await User.findOne({ where: { email } });
 };
 
-export const findUserById = async (userId: number) => {
+export const findUserById = async (userId: number): Promise<User | null>  => {
   return await User.findByPk(userId);
 };
 
@@ -14,14 +14,14 @@ export const createUser = async (
   username: string,
   password: string,
   role: 'customer' | 'admin' = 'customer'
-) => {
+) : Promise<User> => {
   return await User.create({ email, username, password,role });
 };
 
 export const updatePassword = async (
   userId: number,
   newPassword: string
-) => {
+) : Promise<User> => {
   const user = await User.findByPk(userId);
   if (!user) throw new Error('User not found');
 
@@ -31,11 +31,11 @@ export const updatePassword = async (
   return user;
 };
 
-/*export const createUserWithRole = async (data: UserInput) => {
+/*export const createUserWithRole = async (data: UserInput) : Promise<User> => {
   return await User.create(data);
 };*/
 
-export const promoteToAdminByEmail = async (email: string) => {
+export const promoteToAdminByEmail = async (email: string) : Promise<User>=> {
   const user = await findUserByEmail(email);
   if (!user) throw new Error('User not found');
 

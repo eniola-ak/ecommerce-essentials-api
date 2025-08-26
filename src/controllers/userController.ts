@@ -3,7 +3,7 @@ import * as userService from '../services/userService';
 import { registerUserSchema,loginUserSchema } from '../validations/userValidations';
 import { AuthenticatedRequest } from '../interface/userInterface';
 
-export const registerUser = async (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response) :Promise<void>  => {
   try {
     const parsed = registerUserSchema.parse(req.body);
     const user = await userService.register(parsed);
@@ -13,7 +13,7 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response):Promise<void>  => {
   try {
     const parsed = loginUserSchema.parse(req.body);
     const user = await userService.login(parsed);
@@ -23,7 +23,7 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getCurrentUser = async (req: AuthenticatedRequest, res: Response) => {
+export const getCurrentUser = async (req: AuthenticatedRequest, res: Response):Promise<void>  => {
   try {
     if (!req.user || !req.user.id) {
       res.status(401).json({ message: 'Unauthorized: Invalid token or missing user' });

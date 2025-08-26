@@ -1,6 +1,6 @@
 import { Cart, CartItem, Product, User } from '../models';
 
-export const findCartByUserId = async (userId: number) => {
+export const findCartByUserId = async (userId: number):Promise<Cart | null> => {
   return Cart.findOne({
     where: { userId },
     include: [
@@ -20,7 +20,7 @@ export const findCartByUserId = async (userId: number) => {
 };
 
 
-export const createCartIfNotExist = async (userId: number) => {
+export const createCartIfNotExist = async (userId: number) : Promise<Cart> => {
   const [cart] = await Cart.findOrCreate({ where: { userId } });
   return cart;
 };
@@ -29,7 +29,7 @@ export const addItemToCart = async (
   cartId: number,
   productId: number,
   quantity: number
-) => {
+): Promise<CartItem> => {
   const existingItem = await CartItem.findOne({
     where: { cartId, productId }
   });
@@ -42,7 +42,7 @@ export const addItemToCart = async (
   return await CartItem.create({ cartId, productId, quantity });
 };
 
-export const updateCartItem = async (itemId: number, userId: number,quantity: number) => {
+export const updateCartItem = async (itemId: number, userId: number,quantity: number): Promise<CartItem> => {
   const cart = await Cart.findOne({ where: { userId } });
   if (!cart) throw new Error('Cart not found for user');
 
@@ -56,7 +56,7 @@ export const updateCartItem = async (itemId: number, userId: number,quantity: nu
   return await cartItem.save();
 };
 
-export const removeCartItem = async (itemId: number, userId: number) => {
+export const removeCartItem = async (itemId: number, userId: number):Promise<void> => {
   const cart = await Cart.findOne({ where: { userId } });
   if (!cart) throw new Error('Cart not found for user');
 
@@ -68,7 +68,7 @@ export const removeCartItem = async (itemId: number, userId: number) => {
   }
 };
 
-export const clearCart = async (userId: number) => {
+export const clearCart = async (userId: number) :Promise<void> => {
   const cart = await Cart.findOne({ where: { userId } });
 
   if (!cart) {
@@ -76,7 +76,7 @@ export const clearCart = async (userId: number) => {
   }
   await CartItem.destroy({
     where: { cartId: cart.cartId },
-  }); // Optionally reset totalAmount if you store it in Cart
+  });
   cart.totalAmount = 0;
   await cart.save();
 };
