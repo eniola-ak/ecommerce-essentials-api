@@ -30,21 +30,6 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      productDetails: {
-        type: Sequelize.STRING,
-      },
-      slug: {
-        type: Sequelize.STRING,
-      },
-      title: {
-        type: Sequelize.STRING,
-      },
-      price: {
-        type: Sequelize.FLOAT,
-      },
-      image: {
-        type: Sequelize.STRING,
-      },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('NOW'),

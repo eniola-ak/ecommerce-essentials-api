@@ -1,13 +1,12 @@
 import express from 'express';
-import { getCart, addItem } from '../controllers/cartController';
-import { authenticateJWT } from '../middleware/authMiddleware';
-import { customerOnly } from '../middleware/roleMiddleware';
+import { getCart, addItem, updateCartItem, deleteCartItem } from '../controllers/cartController';
+import { customerOnly} from '../middleware/authMiddleware';
 
 const router = express.Router();
 
-const customerMiddleware=[authenticateJWT,customerOnly]
-
-router.get('/', customerMiddleware, getCart);
-router.post('/items', customerMiddleware, addItem);
+router.get('/', customerOnly, getCart);
+router.post('/items', customerOnly, addItem);
+router.put('/items/:itemId',  customerOnly, updateCartItem);
+router.delete('/items/:itemId', customerOnly, deleteCartItem);
 
 export default router;

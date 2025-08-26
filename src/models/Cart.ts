@@ -1,15 +1,16 @@
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import { CartItemAttributes} from './CartItem';
 
-interface CartAttributes {
+export interface CartAttributes {
   cartId: number;
   userId: number;
   totalAmount: number;
   createdAt?: Date;
   updatedAt?: Date;
-  cartItem?: string;
+  cartItem?: CartItemAttributes[]
 }
 
-interface CartCreationAttributes extends Optional<CartAttributes, 'cartId'> {}
+export interface CartCreationAttributes extends Optional<CartAttributes, 'cartId'> {}
 
 export class Cart extends Model<CartAttributes, CartCreationAttributes>
   implements CartAttributes {
@@ -18,7 +19,7 @@ export class Cart extends Model<CartAttributes, CartCreationAttributes>
   declare totalAmount: number;
   declare createdAt?: Date;
   declare updatedAt?: Date;
-  declare cartItem?: string;
+  declare cartItem?: CartItemAttributes[]
 
   static initModel(sequelize: Sequelize): typeof Cart {
     Cart.init(
@@ -44,9 +45,7 @@ export class Cart extends Model<CartAttributes, CartCreationAttributes>
           type: DataTypes.DATE,
           defaultValue: DataTypes.NOW,
         },
-        cartItem: {
-          type: DataTypes.STRING,
-        },
+
       },
       {
         sequelize,
