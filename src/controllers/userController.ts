@@ -25,7 +25,7 @@ export const loginUser = async (req: Request, res: Response):Promise<void>  => {
 
 export const getCurrentUser = async (req: AuthenticatedRequest, res: Response):Promise<void>  => {
   try {
-    if (!req.user || !req.user.id) {
+    if (!req.user?.id) {
       res.status(401).json({ message: 'Unauthorized: Invalid token or missing user' });
     }
     const user = await userService.getCurrentUserById(req.user.id);

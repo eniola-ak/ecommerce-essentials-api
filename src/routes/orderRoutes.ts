@@ -7,7 +7,7 @@ const router = Router();
 
 router.post('/', customerOnly, createOrder);
 router.get('/:orderNumber', authenticateJWT, getOrder);
-router.get('/', getAdminOrders);
+router.get('/', adminOnly, getAdminOrders);
 router.put('/:orderNumber/status', adminOnly, updateOrderStatus);
 
 

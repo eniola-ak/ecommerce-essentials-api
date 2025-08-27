@@ -10,7 +10,7 @@ export const createNewProduct = async (data: CreateProduct): Promise<Product> =>
 
   const existing = await productRepo.findProductBySlug(slug);
   if (existing) {
-    throw new Error('Product with this slug already exists.');
+    throw new Error('Product with this slug already exists');
   }
 
   return productRepo.createProduct(data);
@@ -43,14 +43,14 @@ export const updateProductBySlug = async (
   updates: UpdateProduct
 ): Promise<Product> => {
   const product = await productRepo.findProductBySlug(slug);
-  if (!product) throw new Error('Product not found.');
+  if (!product) throw new Error('Product not found');
 
   if (updates.title) {
     const newSlug = slugify(updates.title, { lower: true });
 
     if (newSlug !== slug) {
       const existing = await productRepo.findProductBySlug(newSlug);
-      if (existing) throw new Error('Another product with this slug already exists.');
+      if (existing) throw new Error('Another product with this slug already exists');
     }
   }
 
@@ -59,6 +59,6 @@ export const updateProductBySlug = async (
 
 export const deleteProductBySlug = async (slug: string): Promise<void> => {
   const product = await productRepo.findProductBySlug(slug);
-  if (!product) throw new Error('Product not found.');
+  if (!product) throw new Error('Product not found');
   return productRepo.deleteProduct(product);
 };

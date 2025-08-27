@@ -18,9 +18,3 @@ export const registerUserSchema = baseUserSchema
 export const loginUserSchema = baseUserSchema
   .pick({email: true, password: true,})
   .strict();
-
-/*export const createUserWithRoleSchema = baseUserSchema
-  .extend({
-    role: z.enum(['customer', 'admin']).default('customer'),
-  })
-  .strict();*/

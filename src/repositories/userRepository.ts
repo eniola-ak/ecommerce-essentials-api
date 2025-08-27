@@ -1,6 +1,7 @@
 import { User } from '../models/User';
 import { UserInput } from '../interface/userInterface';
 
+
 export const findUserByEmail = async (email: string) : Promise<User | null> => {
   return await User.findOne({ where: { email } });
 };
@@ -13,7 +14,7 @@ export const createUser = async (
   email: string,
   username: string,
   password: string,
-  role: 'customer' | 'admin' = 'customer'
+  role:'customer' | 'admin' = 'customer'
 ) : Promise<User> => {
   return await User.create({ email, username, password,role });
 };
@@ -30,10 +31,6 @@ export const updatePassword = async (
 
   return user;
 };
-
-/*export const createUserWithRole = async (data: UserInput) : Promise<User> => {
-  return await User.create(data);
-};*/
 
 export const promoteToAdminByEmail = async (email: string) : Promise<User>=> {
   const user = await findUserByEmail(email);

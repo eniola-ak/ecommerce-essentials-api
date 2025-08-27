@@ -13,13 +13,6 @@ import helmet from 'helmet';
 
 
 const swaggerDocument = YAML.load('./src/docs/swagger.yaml');
-/*sequelize.sync({ alter: true }) 
-  .then(() => {
-    console.log("Database synced");
-  })
-  .catch((err) => {
-    console.error("Sync error", err);
-  });*/
 
 const app = express();
 const PORT = process.env.PORT || 3000;

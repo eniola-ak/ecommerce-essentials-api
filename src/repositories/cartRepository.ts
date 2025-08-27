@@ -6,11 +6,11 @@ export const findCartByUserId = async (userId: number):Promise<Cart | null> => {
     include: [
       {
         model: CartItem,
-        as: 'items', // must match Cart.hasMany(CartItem, { as: 'items' })
+        as: 'items', 
         include: [
           {
             model: Product,
-            as: 'product', // must match CartItem.belongsTo(Product, { as: 'product' })
+            as: 'product', 
             attributes: ['id', 'price', 'stockQuantity', 'title'],
           },
         ],
