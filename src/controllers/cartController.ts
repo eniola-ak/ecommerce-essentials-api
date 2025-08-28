@@ -3,7 +3,7 @@ import * as cartService from '../services/cartService';
 import { AuthenticatedRequest } from '../interface/userInterface';
 import { updateCartItemSchema } from '../validations/cartValidation';
 
-export const getCart = async (req: AuthenticatedRequest, res: Response) => {
+export const getCart = async (req: AuthenticatedRequest, res: Response) : Promise<void> => {
   try {
     const userId = req.user.id;
     const cart = await cartService.getUserCart(userId);
@@ -13,7 +13,7 @@ export const getCart = async (req: AuthenticatedRequest, res: Response) => {
   }
 };
 
-export const addItem = async (req: AuthenticatedRequest, res: Response) => {
+export const addItem = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const userId = req.user.id;
     const { productId, quantity } = req.body;
@@ -24,7 +24,7 @@ export const addItem = async (req: AuthenticatedRequest, res: Response) => {
   }
 };
 
-export const updateCartItem = async (req: AuthenticatedRequest, res: Response) => {
+export const updateCartItem = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const itemId = Number(req.params.itemId);
     const userId = req.user.id;
@@ -43,7 +43,7 @@ export const updateCartItem = async (req: AuthenticatedRequest, res: Response) =
   }
 };
 
-export const deleteCartItem = async (req: AuthenticatedRequest, res: Response) => {
+export const deleteCartItem = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   const itemId = Number(req.params.itemId);
   const userId = req.user.id;
 

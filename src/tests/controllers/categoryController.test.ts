@@ -8,7 +8,6 @@ import {
 } from '../../controllers/categoryController';
 import * as categoryService from '../../services/categoryService';
 
-// Mock the entire service layer
 jest.mock('../../services/categoryService');
 
 describe('Category Controller', () => {

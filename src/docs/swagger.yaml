@@ -693,6 +693,10 @@ components:
           format: email
         password:
           type: string
+        role:
+          type: string
+          enum: [customer, admin]
+          default: customer
     LoginInput:
       type: object
       required: [email, password]

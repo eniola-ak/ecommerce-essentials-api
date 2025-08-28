@@ -9,21 +9,16 @@ import cartRoutes from './routes/cartRoutes';
 import orderRoutes from './routes/orderRoutes';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
+import helmet from 'helmet';
 
 
 const swaggerDocument = YAML.load('./src/docs/swagger.yaml');
-/*sequelize.sync({ alter: true }) 
-  .then(() => {
-    console.log("Database synced");
-  })
-  .catch((err) => {
-    console.error("Sync error", err);
-  });*/
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(helmet());
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -38,9 +33,8 @@ app.get("/", (req: Request, res: Response) => {
   res.send("API is running...");
 });
 
-// Global error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error("🔥 Unhandled Error:", err); // 👈 Logs error
+  console.error("Unhandled Error:", err);
   res.status(err.status || 500).json({
     message: err.message || "Internal Server Error",
   });

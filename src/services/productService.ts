@@ -2,20 +2,21 @@ import * as productRepo from '../repositories/productRepository';
 import { Op } from 'sequelize';
 import slugify from 'slugify';
 import { CreateProduct, UpdateProduct } from '../interface/productInterface';
+import { Product } from '../models/Product'; 
 
 
-export const createNewProduct = async (data: CreateProduct) => {
+export const createNewProduct = async (data: CreateProduct): Promise<Product> => {
   const slug = slugify(data.title,{ lower: true });
 
   const existing = await productRepo.findProductBySlug(slug);
   if (existing) {
-    throw new Error('Product with this slug already exists.');
+    throw new Error('Product with this slug already exists');
   }
 
   return productRepo.createProduct(data);
 };
 
-export const getProducts = async (query: any) => {
+export const getProducts = async (query: any) : Promise<{ count: number; products: Product[] }>=> {
   const { categoryId, search, limit = '10', offset = '0' } = query;
 
   const filters: any = {};
@@ -32,7 +33,7 @@ export const getProducts = async (query: any) => {
   };
 };
 
-export const getProductBySlug = (slug: string) => {
+export const getProductBySlug = (slug: string): Promise<Product | null> => {
   return productRepo.findProductBySlug(slug);
 };
 
@@ -40,24 +41,24 @@ export const getProductBySlug = (slug: string) => {
 export const updateProductBySlug = async (
   slug: string,
   updates: UpdateProduct
-) => {
+): Promise<Product> => {
   const product = await productRepo.findProductBySlug(slug);
-  if (!product) throw new Error('Product not found.');
+  if (!product) throw new Error('Product not found');
 
   if (updates.title) {
     const newSlug = slugify(updates.title, { lower: true });
 
     if (newSlug !== slug) {
       const existing = await productRepo.findProductBySlug(newSlug);
-      if (existing) throw new Error('Another product with this slug already exists.');
+      if (existing) throw new Error('Another product with this slug already exists');
     }
   }
 
   return productRepo.updateProduct(product, updates);
 };
 
-export const deleteProductBySlug = async (slug: string) => {
+export const deleteProductBySlug = async (slug: string): Promise<void> => {
   const product = await productRepo.findProductBySlug(slug);
-  if (!product) throw new Error('Product not found.');
+  if (!product) throw new Error('Product not found');
   return productRepo.deleteProduct(product);
 };

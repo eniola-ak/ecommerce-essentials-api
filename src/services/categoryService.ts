@@ -1,10 +1,11 @@
 import * as categoryRepo from '../repositories/categoryRepository';
 import slugify from 'slugify';
+import { Category } from '../models/Category';
 import { CreateCategory, UpdateCategory } from '../interface/categoryInterface';
 
 const generateSlug = (name: string) => slugify(name, { lower: true });
 
-export const createNewCategory = async (payload: CreateCategory) => {
+export const createNewCategory = async (payload: CreateCategory): Promise<Category> => {
   const { name, description } = payload;
   const slug = slugify(name, { lower: true });
 
@@ -16,18 +17,18 @@ export const createNewCategory = async (payload: CreateCategory) => {
   return categoryRepo.createCategory({ name, description });
 };
 
-export const getCategories = () => {
+export const getCategories = (): Promise<Category[]> => {
   return categoryRepo.findAllCategories();
 };
 
-export const getCategory = (slug: string) => {
+export const getCategory = (slug: string): Promise<Category | null> => {
   return categoryRepo.findCategoryBySlug(slug);
 };
 
 export const updateCategoryBySlug = async (
   slug: string,
   updates: UpdateCategory
-) => {
+): Promise<Category>  => {
   const category = await categoryRepo.findCategoryBySlug(slug);
   if (!category) throw new Error('Category not found.');
 
@@ -43,7 +44,7 @@ export const updateCategoryBySlug = async (
   return categoryRepo.updateCategory(category, updates);
 };
 
-export const deleteCategoryBySlug = async (slug: string) => {
+export const deleteCategoryBySlug = async (slug: string): Promise<void> => {
   const category = await categoryRepo.findCategoryBySlug(slug);
   if (!category) throw new Error('Category not found.');
 

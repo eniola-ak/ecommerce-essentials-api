@@ -1,0 +1,29 @@
+import { Express } from 'express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+
+const swaggerDefinition = {
+  openapi: '3.0.0',
+  info: {
+    title: 'E-commerce Essentials API',
+    version: '1.0.0',
+    description: 'API documentation for E-commerce Essentials project',
+  },
+  servers: [
+    {
+      url: 'http://localhost:3000',
+      description: 'Development server',
+    },
+  ],
+};
+
+const options = {
+  swaggerDefinition,
+  apis: ['./src/routes/*.ts'], 
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+export const setupSwagger = (app: Express): void => {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+};

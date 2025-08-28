@@ -12,7 +12,7 @@ export const createOrder = async (orderData: OrderCreationAttributes & { orderIt
     include: [
       {
         model: OrderItem,
-        as: 'orderItems', // must match Order.hasMany(OrderItem, { as: 'orderItems' })
+        as: 'orderItems',
       },
     ],
   });

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as categoryService from '../services/categoryService';
 
-export const createCategory = async (req: Request, res: Response) => {
+export const createCategory = async (req: Request, res: Response) :Promise<void> => {
   try {
     const { name, description } = req.body;
     if (!name) {
@@ -15,7 +15,7 @@ export const createCategory = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllCategories = async (_req: Request, res: Response) => {
+export const getAllCategories = async (_req: Request, res: Response) :Promise<void>  => {
   try {
     const categories = await categoryService.getCategories();
     res.status(200).json(categories);
@@ -24,7 +24,7 @@ export const getAllCategories = async (_req: Request, res: Response) => {
   }
 };
 
-export const getCategoryBySlug = async (req: Request, res: Response) => {
+export const getCategoryBySlug = async (req: Request, res: Response):Promise<void>  => {
   try {
     const { slug } = req.params;
     const category = await categoryService.getCategory(slug);
@@ -38,7 +38,7 @@ export const getCategoryBySlug = async (req: Request, res: Response) => {
   }
 };
 
-export const updateCategoryBySlug = async (req: Request, res: Response) => {
+export const updateCategoryBySlug = async (req: Request, res: Response) :Promise<void>  => {
   try {
     const { slug } = req.params;
     const updated = await categoryService.updateCategoryBySlug(slug, req.body);
@@ -49,7 +49,7 @@ export const updateCategoryBySlug = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteCategoryBySlug = async (req: Request, res: Response) => {
+export const deleteCategoryBySlug = async (req: Request, res: Response) :Promise<void>  => {
   try {
     const { slug } = req.params;
     await categoryService.deleteCategoryBySlug(slug);

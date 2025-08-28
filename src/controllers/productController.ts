@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as productService from '../services/productService';
 
-export const createProduct = async (req: Request, res: Response) => {
+export const createProduct = async (req: Request, res: Response):Promise<void>  => {
   try {
     const product = await productService.createNewProduct(req.body);
     res.status(201).json(product);
@@ -10,7 +10,7 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const getProducts = async (req: Request, res: Response) => {
+export const getProducts = async (req: Request, res: Response):Promise<void>  => {
   try {
     const { products, count } = await productService.getProducts(req.query);
     res.status(200).json({ count, products });
@@ -19,7 +19,7 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
-export const getProductBySlug = async (req: Request, res: Response) => {
+export const getProductBySlug = async (req: Request, res: Response):Promise<void>  => {
   try {
     const product = await productService.getProductBySlug(req.params.slug);
     if (!product) {
@@ -32,7 +32,7 @@ export const getProductBySlug = async (req: Request, res: Response) => {
   }
 };
 
-export const updateProductBySlug = async (req: Request, res: Response) => {
+export const updateProductBySlug = async (req: Request, res: Response) :Promise<void>  => {
   try {
     const updatedProduct = await productService.updateProductBySlug(req.params.slug, req.body);
     res.status(200).json({ message: 'Product updated successfully', product: updatedProduct });
@@ -51,7 +51,7 @@ export const updateProductBySlug = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteProductBySlug = async (req: Request, res: Response) => {
+export const deleteProductBySlug = async (req: Request, res: Response) :Promise<void>  => {
   try {
     await productService.deleteProductBySlug(req.params.slug);
     res.status(200).json({ message: 'Product deleted successfully' });

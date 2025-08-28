@@ -57,20 +57,6 @@ export const getCurrentUserById = async (userId: number) => {
   };
 };
 
-/*export const createUserWithRole = async (
-  email: string,
-  username: string,
-  password: string,
-  role: 'user' | 'admin'
-) => {
-  const existing = await userRepo.findUserByEmail(email);
-  if (existing) throw new Error('User already exists');
-
-  const hashed = await bcrypt.hash(password, 10);
-  return await userRepo.createUserWithRole({email, username, password, role});
-};
-*/
-
 export const promoteUserToAdmin = async (email: string) => {
   return await userRepo.promoteToAdminByEmail(email);
 };

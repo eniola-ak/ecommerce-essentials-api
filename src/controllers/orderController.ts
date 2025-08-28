@@ -23,7 +23,6 @@ export const getOrder = async (req: AuthenticatedRequest, res: Response) :Promis
     const order = await orderService.getOrderByNumber(orderNumber, userId, isAdmin);
     res.status(200).json(order);
   } catch (error: any) {
-    // 403 for unauthorized, 404 for not found, 400 for other errors
     if (error.message === 'Unauthorized access') {
       res.status(403).json({ message: error.message });
     } else if (error.message === 'Order not found') {
@@ -60,7 +59,6 @@ export const getAdminOrders = async (req: AuthenticatedRequest, res: Response):P
       },
     });
   } catch (error: any) {
-    console.error(error);
     res.status(500).json({ success: false, message: error.message || 'Failed to fetch orders' });
   }
 };
@@ -77,7 +75,6 @@ export const updateOrderStatus = async (req: AuthenticatedRequest, res: Response
 
     res.status(200).json({ success: true, data: updatedOrder });
   } catch (error: any) {
-    console.error(error);
 
     if (error.message === 'orderStatus is required' || error.message === 'Invalid orderStatus') {
       res.status(400).json({ success: false, message: error.message });
