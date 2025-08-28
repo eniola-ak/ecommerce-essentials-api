@@ -36,7 +36,7 @@ export const addItemToCart = async (
 
   if (existingItem) {
     existingItem.quantity += quantity;
-    return await existingItem.save();  //ret
+    return await existingItem.save();  
   }
 
   return await CartItem.create({ cartId, productId, quantity });

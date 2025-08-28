@@ -24,7 +24,6 @@ describe('Product Controller', () => {
     jest.clearAllMocks();
   });
 
-  // CREATE
   describe('createProduct', () => {
     it('should return 400 on validation error', async () => {
       req.body = {};
@@ -50,7 +49,6 @@ describe('Product Controller', () => {
     });
   });
 
-  // READ ALL
   describe('getProducts', () => {
     it('should return product list and count', async () => {
       const mockResult = { count: 2, products: [{ title: 'A' }, { title: 'B' }] };
@@ -72,7 +70,6 @@ describe('Product Controller', () => {
     });
   });
 
-  // READ ONE
   describe('getProductBySlug', () => {
     it('should return 404 if product not found', async () => {
       req.params = { slug: 'missing' };
@@ -106,7 +103,6 @@ describe('Product Controller', () => {
     });
   });
 
-  // UPDATE
   describe('updateProductBySlug', () => {
     it('should return 404 if product is not found', async () => {
       req.params = { slug: 'missing' };
@@ -151,7 +147,6 @@ describe('Product Controller', () => {
     });
   });
 
-  // DELETE
   describe('deleteProductBySlug', () => {
     it('should return 404 if product not found', async () => {
       req.params = { slug: 'not-found' };

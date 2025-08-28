@@ -35,17 +35,6 @@ export const getCurrentUser = async (req: AuthenticatedRequest, res: Response):P
   }
 };
 
-/*export const createUserWithRole = async (req: Request, res: Response): Promise<void> => {
-  const { email, username, password, role } = req.body;
-
-  try {
-    const user = await userService.createUserWithRole(email, username, password, role);
-    res.status(201).json({ message: `User created as ${role}`, user });
-  } catch (err: any) {
-    res.status(400).json({ message: err.message });
-  }
-};*/
-
 export const promoteUser = async (req: Request, res: Response): Promise<void> => {
   const { email } = req.body;
 

@@ -102,7 +102,7 @@ describe('updateCartItem', () => {
       const mockReq = {
         user: { id: 123 },
         params: { itemId: '1' },
-        body: { quantity: 0 } // invalid quantity
+        body: { quantity: 0 }
       } as unknown as AuthenticatedRequest;
 
       await updateCartItem(mockReq, mockRes as Response);
